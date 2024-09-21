@@ -1,0 +1,43 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: authen-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /3.0.0.1/api/authen
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: rewrite.bar.com
+    http:
+      paths:
+      - path: /3.0/api/authen
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cart-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /2.0.0.1/api/cart
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: rewrite.bar.com
+    http:
+      paths:
+      - path: /2.0/api/cart
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
